@@ -24,16 +24,17 @@ ChefGPT é uma solução completa de atendimento automatizado para restaurantes,
  - Arquitetura modular, facilitando manutenção e extensão.
 
 ## 📷 Exemplos de uso
-Envio de cardapio de forma organizada
+# Envio de cardapio de forma organizada
 ![image](https://github.com/user-attachments/assets/5c05bee3-0ac5-4c6e-870e-f74dfc38b3fb)
 
-Caso não tenha o item requisitado pelo cliente, é informado e sugerido item parecido
+# Caso não tenha o item requisitado pelo cliente, é informado e sugerido item parecido
 ![image](https://github.com/user-attachments/assets/d2fab405-4094-495d-87d2-86ff2d6aec81)
 
-Finalizando pedido informando todos os items
+# Finalizando pedido informando todos os items
 ![image](https://github.com/user-attachments/assets/b53737b5-4402-4f95-a9ec-9708978d22f7)
 
 Quando o pedido é finalizado um arquivo json é criado com todas as informações do pedido
+
 ```{"telefone_cliente": "+5511975797854", "endereco_entrega": "Rua Antonio de Jesus n 18", "forma_pagamento": "Dinheiro", "itens": [{"nome": "Chesseburguer", "quantidade": 3, "preco_unitario": 20.5, "observacoes": ""}], "valor_total": 61.5, "troco_para": 100}```
 
 ## 🏗️ Arquitetura e Stack
