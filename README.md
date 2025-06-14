@@ -13,7 +13,7 @@ ChefGPT é uma solução completa de atendimento automatizado para restaurantes,
 **O fluxo principal é:**
 1. O cliente envia uma mensagem pelo WhatsApp.
 2. O servidor Flask recebe o webhook e encaminha a mensagem à IA.
-3. A IA (Gemini) responde e o servidor envia de volta via Twilio.
+3. A IA (Gemini) responde com base em um prompt e o servidor envia de volta via Twilio.
 4. O bot anota itens, endereço e forma de pagamento.
 5. Quando o pedido é finalizado, gera um JSON e salva em orders/.
 
