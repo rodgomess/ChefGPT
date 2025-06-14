@@ -10,18 +10,31 @@ ChefGPT é uma solução completa de atendimento automatizado para restaurantes,
  - Google Gemini (GenAI SDK) para geração de respostas inteligentes e análise de pedidos.
  - Estrutura modular que separa configurações, lógica de IA, rotas do bot e armazenamento de pedidos.
 
-O fluxo principal é:
+**O fluxo principal é:**
 1. O cliente envia uma mensagem pelo WhatsApp.
 2. O servidor Flask recebe o webhook e encaminha a mensagem à IA.
 3. A IA (Gemini) responde e o servidor envia de volta via Twilio.
 4. O bot anota itens, endereço e forma de pagamento.
-Quando o pedido é finalizado, gera um JSON e salva em orders/.
+5. Quando o pedido é finalizado, gera um JSON e salva em orders/.
 
 ## ⭐ Funcionalidades
  - Atendimento conversacional, sugerindo itens com base em um cardápio (menu.json).
  - Coleta de dados do pedido: itens, quantidades, observações, endereço e pagamento.
  - Detecta fim de pedido e exporta estrutura JSON.
  - Arquitetura modular, facilitando manutenção e extensão.
+
+## 📷 Exemplos de uso
+Envio de cardapio de forma organizada
+![image](https://github.com/user-attachments/assets/5c05bee3-0ac5-4c6e-870e-f74dfc38b3fb)
+
+Caso não tenha o item requisitado pelo cliente, é informado e sugerido item parecido
+![image](https://github.com/user-attachments/assets/d2fab405-4094-495d-87d2-86ff2d6aec81)
+
+Finalizando pedido informando todos os items
+![image](https://github.com/user-attachments/assets/b53737b5-4402-4f95-a9ec-9708978d22f7)
+
+Quando o pedido é finalizado um arquivo json é criado com todas as informações do pedido
+```{"telefone_cliente": "+5511975797854", "endereco_entrega": "Rua Antonio de Jesus n 18", "forma_pagamento": "Dinheiro", "itens": [{"nome": "Chesseburguer", "quantidade": 3, "preco_unitario": 20.5, "observacoes": ""}], "valor_total": 61.5, "troco_para": 100}```
 
 ## 🏗️ Arquitetura e Stack
 
