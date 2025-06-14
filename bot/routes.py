@@ -1,51 +1,64 @@
-from ai.client import ask_gemini
+
 from flask import Blueprint, request
 from twilio.twiml.messaging_response import MessagingResponse
+
+import json, re
+from collections import defaultdict
+
+from ai.client import ask_gemini
 from ai.prompt import PROMPT_INIT, PROMPT_FINISH
-import json
 
 bp = Blueprint("whatsapp", __name__)
 
+# Palavra chave de encerramento
 ended_keywords = "Pedido feito com sucesso"
-user_histories = {}
+
+# Inicializando historico de conversas como dicionario
+user_histories = defaultdict(list)
 
 @bp.route("/whatsapp", methods=["POST"])
 def whatsapp_reply():
+
+    # Captura a mensagem e o numero do cliente
     user_msg = request.form.get("Body")
     user_number = request.form.get("From")
 
-    # Inicializa histórico
-    if user_number not in user_histories:
-        user_histories[user_number] = [f"Cliente: {user_msg}"]
-    else:
-        user_histories[user_number].append(f'Cliente: {user_msg}')
 
+    # Adiciona mensagem do usuario ao seu respectivo historico, como cliente
+    user_histories[user_number].append(f"Cliente: {user_msg}")
+
+    # Coloca o prompt inicial com o historico de conersa para que o bot saiba oq já foi dito
     full_prompt = [PROMPT_INIT] + user_histories[user_number]
-    
-    res_gemini = ask_gemini(full_prompt)
 
-    # Adiciona resposta ao histórico
-    user_histories[user_number].append(f"Atendente: {res_gemini}")
+    # Envia o prompt inteiro com historico e a ultima pergunta do cliente para o bot
+    bot_response = ask_gemini(full_prompt)
+
+    # Adiciona resposta do bot ao historico, como atendente
+    user_histories[user_number].append(f"Atendente: {bot_response}")
 
     # Envia resposta pro WhatsApp
-    response = MessagingResponse()
-    response.message(res_gemini)
+    resp = MessagingResponse()
+    resp.message(bot_response)
     
-    if ended_keywords in res_gemini:
-        add_client_tel = f"Telefone do cliente: {user_number}"
-        full_prompt  = user_histories[user_number] + [add_client_tel] + [PROMPT_FINISH]
-        
-        str_order = ask_gemini(full_prompt)
+    # Quando o Bot finaliza o pedido ele envia uma palavra chave indicando que o antendimento deve ser finalizado
+    if ended_keywords in bot_response:
 
-        # Remove a palavra "json" se estiver no início
-        if str_order.lower().startswith("```json"):
-            str_order = str_order[8:-4].strip()
+        # Adiciona ao historico de conversas o telefone do cliente para criação do json
+        user_histories[user_number].append(f"Telefone do cliente: {user_number}")
 
-        json_order = json.loads(str_order)
+        # Coloca o prompt de fechamento para finalizar a conversa e criar o json
+        full_prompt  = user_histories[user_number] + [PROMPT_FINISH]
+        res_order = ask_gemini(full_prompt)
 
-        with open(f"orders/order_{user_number.replace(':', '')}.json", "w", encoding="utf-8") as file:
-            json.dump(json_order, file)
+        # Remove a palavra "``json" do inicio e "```" do final e adiciona em um formato json
+        clean_order = re.sub(r"^```json\s*|```$", "", res_order).strip()
+        json_order = json.loads(clean_order)
 
-        # Reseta conversa
-        del user_histories[user_number]
-    return str(response)
+        # Salva o json com todas as informações do pedido
+        with open(f"orders/order_{user_number.replace('whatsapp:+', '')}.json", "w", encoding="utf-8") as f:
+            json.dump(json_order, f)
+
+        # Reseta a conversa
+        user_histories.pop(user_number, None)
+
+    return str(resp)

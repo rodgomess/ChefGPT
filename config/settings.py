@@ -3,9 +3,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Flask
+# Porta do servidor e sinalizacao de debug para o Flask 
 PORT = int(os.getenv("PORT", 5000))
 DEBUG = os.getenv("FLASK_DEBUG", "false").lower()
 
-# Gemini
+# Geminic Key
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")

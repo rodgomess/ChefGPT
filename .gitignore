@@ -1,3 +1,6 @@
+# Iginore tests
+test.py
+
 # Iginore orders
 orders/*.json
 
