@@ -1,0 +1,40 @@
+[
+    {
+        "food": [
+            {
+                "name": "Chesseburguer",
+                "ingredients": ["pão", "hamburguer", "queijo", "picles"],
+                "price": 20.50,
+                "type": "burguer"
+            },
+            {
+                "name": "X-Bacon",
+                "ingredients": ["pão", "hamburguer", "bacon", "queijo"],
+                "price": 25.00,
+                "type": "burguer"
+            },
+            {
+                "name": "Pudim",
+                "ingredients": ["leite condensado", "leite", "ovos", "açúcar"],
+                "price": 15.03,
+                "type": "dessert"
+            }
+        ],
+
+        "drinks": [
+            {
+                "name": "Pepsi",
+                "price": 5.00,
+                "type": "soda"
+            },
+            {
+                "name": "Suco de limão",
+                "ingredients": ["limão"],
+                "price": 5.00,
+                "type": "juice"
+            }
+        ]
+    }
+    
+    
+]
